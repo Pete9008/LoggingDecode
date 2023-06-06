@@ -29,4 +29,3 @@ Options:
 <dest>.sr             - PulseView native format file containing the motor data.
 <dest>_motor_data.csv - A CSV format file containing the motor data (note - large file, approx 4.5 times the size of the input file).
 <dest>_spot_values.csv- A CSV format file containing the inverter spot values
-
