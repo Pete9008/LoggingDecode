@@ -103,8 +103,8 @@ int main(int argc, char *argv[])
     QMap<uint32_t, double> spotValues;
 
     double modmax = MODMAX;
-    uint32_t freq=8789;
-    uint32_t maxpwm=8192;
+    uint32_t freq=0;
+    uint32_t maxpwm=0;
 
     QByteArray jsonHeader;
     char val;
@@ -175,15 +175,31 @@ int main(int argc, char *argv[])
                     if(key == "pwmirqfrq") freq = jsonObject2[key2].toInt();
                     if(key == "pwmmax") maxpwm = jsonObject2[key2].toInt();
                     if(key == "modmax") modmax = jsonObject2[key2].toDouble();
+                    if(key == "pwmfrq") //legacy support
+                    {
+                        freq = 8789;
+                        switch (jsonObject2[key2].toInt())
+                        {
+                        case 0://17k6
+                            maxpwm = 4096;
+                            break;
+                        case 1://8k8
+                            maxpwm = 8192;
+                            break;
+                        case 2://4k4
+                            maxpwm = 16348;
+                            break;
+                        }
+                    }
                 }
             }
         }
 
-//        if((freq==0) || (maxpwm==0))
-//        {
-//            qDebug("Could not find pwmmax or pwmirqfrq parameters");
-//            return 0;
-//        }
+        if((freq==0) || (maxpwm==0))
+        {
+            qDebug("Could not find pwmmax or pwmirqfrq parameters");
+            return 0;
+        }
 
 //read in binary log format definitions
         jsonHeader.clear();
